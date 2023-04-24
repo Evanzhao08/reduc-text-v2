@@ -1,23 +1,33 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {
-  createIncrementAction,
-  createDecrementAction,
-  createIncrementAsyncAction,
-} from '../../redux/actions/count'
+import { increment, decrement, incrementAsync } from '../../redux/actions/count'
 
 class Count extends Component {
   increment = () => {
     const { value } = this.selectNumber
-    console.log(value)
-    this.props.jia(value * 1)
+    this.props.increment(value * 1)
   }
+  decrement = () => {
+    const { value } = this.selectNumber
+    this.props.decrement(value * 1)
+  }
+  incrementAsync = () => {
+    const { value } = this.selectNumber
+    this.props.incrementAsync(value * 1, 500)
+  }
+  incrementIfOdd = () => {
+    const { value } = this.selectNumber
+    if (this.props.count % 2 !== 0) {
+      this.props.increment(value * 1)
+    }
+  }
+
   render() {
     return (
       <>
         <h2>我是count组件</h2>
         <h4>
-          当前求和为:{this.props.he} 下方组件总人数为:{this.props.personNum}
+          当前求和为:{this.props.count} 下方组件总人数为:{this.props.persons}
         </h4>
         <select ref={(c) => (this.selectNumber = c)}>
           <option value="1">1</option>
@@ -35,12 +45,12 @@ class Count extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { he: state.he, personNum: state.rens.length }
+  return { count: state.count, persons: state.person.length }
 }
 
 const mapDispatchToProps = {
-  jia: createIncrementAction,
-  jian: createDecrementAction,
-  jiaAsync: createIncrementAsyncAction,
+  increment,
+  decrement,
+  incrementAsync,
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Count)
