@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import {
+  createDecrementAction,
+  createIncrementAction,
+  createIncrementAsyncAction,
+} from '../../redux/count_action'
 
-export default class Count extends Component {
+class Count extends Component {
   //state = { carName: '奔驰c63' }
 
   //加法
@@ -45,3 +51,26 @@ export default class Count extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return { count: state }
+}
+
+/* //mapDispatchToProps 的一般写法
+const mapDispatchToProps = (dispatch) => {
+  return {
+    jia: (number) => dispatch(createIncrementAction(number)),
+    jian: (number) => dispatch(createDecrementAction(number)),
+    jiaAsync: (number, time) =>
+      dispatch(createIncrementAsyncAction(number, time)),
+  }
+} */
+
+//mapDispatchToProps 的精简写法
+const mapDispatchToProps = {
+  jia: createIncrementAction,
+  jian: createDecrementAction,
+  jiaAsync: createIncrementAsyncAction,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Count)
